@@ -9,6 +9,15 @@ func (app *application) editConflictResponse(w http.ResponseWriter, r *http.Requ
 	message := "unable to update the record due to an edit conflict, please try again"
 	app.errorResponse(w, r, http.StatusConflict, message)
 }
+func (app *application) invalidCredentialsResponse(w http.ResponseWriter, r *http.Request) {
+	message := "invalid authentication credentials"
+	app.errorResponse(w, r, http.StatusUnauthorized, message)
+}
+func (app *application) notActivatedUser(w http.ResponseWriter, r *http.Request) {
+	message := "account has not activated yet"
+	app.errorResponse(w, r, http.StatusForbidden, message)
+}
+
 func (app *application) logError(r *http.Request, err error) {
 	// Use the PrintError() method to log the error message, and include the current
 	// request method and URL as properties in the log entry.

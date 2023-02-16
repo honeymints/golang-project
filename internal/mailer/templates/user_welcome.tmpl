@@ -1,12 +1,11 @@
-{{define "subject"}}Welcome to Greenlight!{{end}}
+{{define "subject"}}Welcome to To-Do List!{{end}}
 {{define "plainBody"}}
 Hi,
 Thanks for signing up for a To Do List account. We're excited to have you on board!
-Please click on this link to activate your account localhost:8000/activated/{{.activationToken}}` 
-{"token": "{{.activationToken}}"}
+Please click on this link to activate your account` 
 Please note that this is a one-time use token and it will expire in 3 days.
 Thanks,
-The To Do List Team
+ To Do List Team
 {{end}}
 {{define "htmlBody"}}
 <!doctype html>
@@ -18,13 +17,10 @@ The To Do List Team
 <body>
 <p>Hi,</p>
 <p>Thanks for signing up for a To Do List account. We're excited to have you on board!</p>
-<p>Please click on this link to activate your account localhost:8000/activated/{{.activationToken}}</p>
-<pre><code>
-{"token": "{{.activationToken}}"}
-</code></pre>
+<a href="{{.}}">Please click on this link to activate your account </a>
 <p>Please note that this is a one-time use token and it will expire in 3 days.</p>
 <p>Thanks,</p>
-<p>The To Do List Team</p>
+<p>To Do List Team</p>
 </body>
 </html>
 {{end}}

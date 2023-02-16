@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"text/template"
 	"time"
@@ -133,10 +134,13 @@ func (app *application) welcomeHandler(w http.ResponseWriter, r *http.Request) {
 		// templates, we create a map to act as a 'holding structure' for the data. This
 		// contains the plaintext version of the activation token for the user, along
 		// with their ID.
-		data := map[string]interface{}{
+		/* data := map[string]interface{}{
 			"activationToken": token.Plaintext,
 			"userID":          user.ID,
-		}
+		} */
+		data := "http://localhost:8000/activated/"
+		data += token.Plaintext
+		fmt.Print(data)
 		err = app.mailer.Send(user.Email, "user_welcome.tmpl", data)
 		if err != nil {
 			app.logger.Print("ERROR", err)
