@@ -11,7 +11,6 @@ import (
 
 	_ "github.com/lib/pq"
 	"todolist.net/internal/data"
-	"todolist.net/internal/jsonlog"
 	"todolist.net/internal/mailer"
 )
 
@@ -60,17 +59,17 @@ func main() {
 
 	flag.Parse()
 
-	logger := jsonlog.New(os.Stdout, jsonlog.LevelInfo)
+	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 	db, err := sql.Open("postgres", "user=admin password=gudron dbname=todolist sslmode=disable")
 
 	if err != nil {
-		logger.PrintFatal(err, nil)
+		logger.Fatal(err)
 	}
 	defer db.Close()
 
 	// Also log a message to say that the connection pool has been successfully
 	// established.
-	logger.PrintInfo("database connection pool established", nil)
+	logger.Print("database connection pool established", nil)
 
 	app := &application{
 		config: cfg,
@@ -86,12 +85,10 @@ func main() {
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
 	}
-	logger.PrintInfo("starting server", map[string]string{
-		"addr": srv.Addr,
-		"env":  cfg.env,
-	})
+
+	logger.Printf("starting %s server on %s", cfg.env, srv.Addr)
 	err = srv.ListenAndServe()
 
-	logger.PrintFatal(err, nil)
+	logger.Fatal(err)
 
 }

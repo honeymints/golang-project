@@ -27,11 +27,22 @@ func (app *application) writeJSON(w http.ResponseWriter, status int, data interf
 	}
 	// Add the "Content-Type: application/json" header, then write the status code and
 	// JSON response.
-	/* w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(status) */
-	//	w.Write(js)
+	//w.Header().Set("Content-Type", "application/json")
 	fmt.Println(status)
 	dat := string(js[:])
 	fmt.Fprint(os.Stdout, dat)
 	return nil
+}
+func (app *application) background(fn func()) {
+	// Launch a background goroutine.
+	go func() {
+		// Recover any panic.
+		defer func() {
+			if err := recover(); err != nil {
+				app.logger.Print(fmt.Errorf("%s", err), nil)
+			}
+		}()
+		// Execute the arbitrary function that we passed as the parameter.
+		fn()
+	}()
 }

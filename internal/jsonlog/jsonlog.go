@@ -1,5 +1,6 @@
 package jsonlog
 
+/*
 import (
 	"encoding/json"
 	"io"
@@ -7,7 +8,9 @@ import (
 	"runtime/debug"
 	"sync"
 	"time"
-) // Define a Level type to represent the severity level for a log entry.
+)
+
+// Define a Level type to represent the severity level for a log entry.
 type Level int8
 
 // Initialize constants which represent a specific severity level. We use the iota
@@ -112,4 +115,4 @@ func (l *Logger) print(level Level, message string, properties map[string]string
 // properties.
 func (l *Logger) Write(message []byte) (n int, err error) {
 	return l.print(LevelError, string(message), nil)
-}
+} */

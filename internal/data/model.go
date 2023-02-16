@@ -6,12 +6,15 @@ import (
 )
 
 type Models struct {
-	Users UserModel // Add a new Users field.
+	Tokens: TokenModel
+	Users UserModel
+	 // Add a new Users field.
 }
 
 func NewModels(db *sql.DB) Models {
 	return Models{
-		Users: UserModel{DB: db}, // Initialize a new UserModel instance.
+		Users: UserModel{DB: db},
+		Tokens: TokenModel{DB: db}, // Initialize a new UserModel instance.
 	}
 }
 

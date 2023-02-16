@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"text/template"
 
@@ -67,20 +66,12 @@ func (app *application) welcomeHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	go func() {
-		// Run a deferred function which uses recover() to catch any panic, and log an
-		// error message instead of terminating the application.
-		defer func() {
-			if err := recover(); err != nil {
-				app.logger.PrintError(fmt.Errorf("%s", err), nil)
-			}
-		}()
-		// Send the welcome email.
+	app.background(func() {
 		err = app.mailer.Send(user.Email, "user_welcome.tmpl", user)
 		if err != nil {
-			app.logger.PrintError(err, nil)
+			app.logger.Print("ERROR", err)
 		}
-	}()
+	})
 	err = app.writeJSON(w, http.StatusAccepted, envelope{"user": user}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
