@@ -5,13 +5,40 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Welcome</title>
+    <title>To Do</title>
+
+    <link rel="icon" href="favicon/logo.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon/logo.ico" type="image/x-icon">  
+
+    <link href="templates/css/welcome&&activate.css" rel="stylesheet" type="text/css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
-    <img src="templates/images/logo.png" alt="logo" class="image">
+ 
+    <a href="Untitled-2.html">
 
-    <h1>Congrats, {{.}}</h1>
-    <h1>Your account has been activated!</h1>
+        <img src="templates/images/logo.png" alt="logo" class="image">
+
+        <h3 class="t-logo">to-do</h3>
+
+    </a>
+
+    <div class="container" id="lo">
+
+        <h2 id="q">Congratulations, {{.}}!</h2>
+
+        <hr>
+
+        <h2 id="q">Your account has been successfully activated!</h2>
+
+        <button id="log">Log In</button>
+
+    </div>
+
 </body>
 </html>
