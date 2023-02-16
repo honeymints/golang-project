@@ -28,6 +28,9 @@ func (app *application) writeJSON(w http.ResponseWriter, status int, data interf
 	// Add the "Content-Type: application/json" header, then write the status code and
 	// JSON response.
 	//w.Header().Set("Content-Type", "application/json")
+	if status > 400 && status < 600 {
+		w.Write(js)
+	}
 	fmt.Println(status)
 	dat := string(js[:])
 	fmt.Fprint(os.Stdout, dat)

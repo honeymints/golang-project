@@ -18,6 +18,7 @@ func (app *application) routes() *httprouter.Router {
 	router.HandlerFunc(http.MethodGet, "/", app.homeHandler)
 
 	router.HandlerFunc(http.MethodPost, "/welcome", app.welcomeHandler)
+	router.HandlerFunc(http.MethodGet, "/activated/:token", app.activateUserHandler)
 	/* 	router.HandlerFunc(http.MethodPost, "/v1/movies", app.createMovieHandler)
 	   	router.HandlerFunc(http.MethodGet, "/v1/movies/:id", app.showMovieHandler) */
 	// Return the httprouter instance.

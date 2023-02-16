@@ -6,6 +6,7 @@ import (
 	"text/template"
 	"time"
 
+	"github.com/julienschmidt/httprouter"
 	"todolist.net/internal/data"
 	"todolist.net/internal/validator"
 )
@@ -16,6 +17,67 @@ func (app *application) homeHandler(w http.ResponseWriter, r *http.Request) {
 
 	http.ServeFile(w, r, "templates/Untitled-2.html")
 
+}
+func (app *application) activateUserHandler(w http.ResponseWriter, r *http.Request) {
+	// Parse the plaintext activation token from the request body.
+	params := httprouter.ParamsFromContext(r.Context())
+	tokens := params.ByName("token")
+
+	// Validate the plaintext token provided by the client.
+	v := validator.New()
+	if data.ValidateTokenPlaintext(v, tokens); !v.Valid() {
+		app.failedValidationResponse(w, r, v.Errors)
+		return
+	}
+	// Retrieve the details of the user associated with the token using the
+	// GetForToken() method (which we will create in a minute). If no matching record
+	// is found, then we let the client know that the token they provided is not valid.
+	user, err := app.models.Users.GetForToken(data.ScopeActivation, tokens)
+	if err != nil {
+		switch {
+		case errors.Is(err, data.ErrRecordNotFound):
+			v.AddError("token", "invalid or expired activation token")
+			app.failedValidationResponse(w, r, v.Errors)
+		default:
+			app.serverErrorResponse(w, r, err)
+		}
+		return
+	}
+	// Update the user's activation status.
+	user.Activated = true
+	// Save the updated user record in our database, checking for any edit conflicts in
+	// the same way that we did for our movie records.
+	err = app.models.Users.Update(user)
+	if err != nil {
+		switch {
+		case errors.Is(err, data.ErrEditConflict):
+			app.editConflictResponse(w, r)
+		default:
+			app.serverErrorResponse(w, r, err)
+		}
+		return
+	}
+	// If everything went successfully, then we delete all activation tokens for the
+	// user.
+	err = app.models.Tokens.DeleteAllForUser(data.ScopeActivation, user.ID)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+	// Send the updated user details to the client in a JSON response.
+	err = app.writeJSON(w, http.StatusOK, envelope{"user": user}, nil)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+	} else {
+		tpl, err := template.ParseFiles("templates/activated.html")
+		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+		dat := user.Name
+
+		tpl.ExecuteTemplate(w, "activated.html", dat)
+	}
 }
 
 func (app *application) welcomeHandler(w http.ResponseWriter, r *http.Request) {
@@ -29,18 +91,10 @@ func (app *application) welcomeHandler(w http.ResponseWriter, r *http.Request) {
 		Email:     r.FormValue("email"),
 		Activated: false,
 	}
-	tpl, err := template.ParseFiles("templates/welcome.html")
-	if err != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
-	}
-	dat := r.FormValue("txt")
-
-	tpl.ExecuteTemplate(w, "welcome.html", dat)
 
 	// Use the Password.Set() method to generate and store the hashed and plaintext
 	// passwords.
-	err = user.Password.Set(r.FormValue("pswd"))
+	err := user.Password.Set(r.FormValue("pswd"))
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
@@ -88,8 +142,19 @@ func (app *application) welcomeHandler(w http.ResponseWriter, r *http.Request) {
 			app.logger.Print("ERROR", err)
 		}
 	})
+
 	err = app.writeJSON(w, http.StatusAccepted, envelope{"user": user}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
+	} else {
+		tpl, err := template.ParseFiles("templates/welcome.html")
+		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+		dat := r.FormValue("txt")
+
+		tpl.ExecuteTemplate(w, "welcome.html", dat)
 	}
+
 }
