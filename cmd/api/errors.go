@@ -14,8 +14,17 @@ func (app *application) invalidCredentialsResponse(w http.ResponseWriter, r *htt
 	app.errorResponse(w, r, http.StatusUnauthorized, message)
 }
 func (app *application) notActivatedUser(w http.ResponseWriter, r *http.Request) {
-	message := "account has not activated yet"
+	message := "your account has not activated yet"
 	app.errorResponse(w, r, http.StatusForbidden, message)
+}
+func (app *application) authenticationRequiredResponse(w http.ResponseWriter, r *http.Request) {
+	message := "you must be authenticated to access this resource"
+	app.errorResponse(w, r, http.StatusUnauthorized, message)
+}
+func (app *application) invalidAuthenticationTokenResponse(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("WWW-Authenticate", "Bearer")
+	message := "invalid or missing authentication token"
+	app.errorResponse(w, r, http.StatusUnauthorized, message)
 }
 
 func (app *application) logError(r *http.Request, err error) {
