@@ -19,10 +19,10 @@ type Lists struct {
 
 func (m ListModel) Insert(list *Lists) error {
 	query := `
-	INSERT INTO lists (title, description, user_id)
+	INSERT INTO lists (title, description, created_at, user_id)
 	VALUES ($1, $2, $3, $4)
 	RETURNING id, created_at`
-	args := []interface{}{list.Title, list.Description, list.User_ID}
+	args := []interface{}{list.Title, list.Description, list.CreatedAt, list.User_ID}
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 	// If the table already contains a record with this email address, then when we try

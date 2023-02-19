@@ -10,7 +10,7 @@
 
 <body>
     <img src="templates/images/logo.png" alt="logo" class="image">
-    <form action="/myacc/tasks">
+    <form action="/myacc/tasks/" method="post">
   <label for="fname">First name:</label><br>
   <input type="text" id="fname" name="title"><br>
   <label for="lname">Last name:</label><br>
@@ -19,5 +19,6 @@
 </form> 
 
     <h1>task page</h1>
+    <h1>{{.}}</h1>
 </body>
 </html>

@@ -9,6 +9,27 @@ import (
 	"todolist.net/internal/validator"
 )
 
+/*
+	 func accountHandler(w http.ResponseWriter, r *http.Request) {
+		// Get the JWT from the request header
+		authHeader := r.Header.Get("Authorization")
+		if authHeader == "" {
+			http.Redirect(w, r, "/", http.StatusFound)
+			return
+		}
+
+		// Verify the JWT and get the user ID
+		tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
+		userId, err := app.models.User.
+		if err != nil {
+			http.Redirect(w, r, "/", http.StatusFound)
+			return
+		}
+
+		// User is authenticated, so redirect to the account page
+		http.Redirect(w, r, "/myacc", http.StatusFound)
+	}
+*/
 func (app *application) requireActivatedUser(next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Use the contextGetUser() helper that we made earlier to retrieve the user
