@@ -33,7 +33,9 @@ func (app *application) createAuthenticationTokenHandler(w http.ResponseWriter, 
 		}
 		return
 	}
-
+	if !user.Activated {
+		app.notActivatedUser(w, r)
+	}
 	// Check if the provided password matches the actual password for the user.
 	match, err := user.Password.Matches(password)
 	if err != nil {
