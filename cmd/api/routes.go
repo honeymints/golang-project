@@ -17,10 +17,11 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodGet, "/", app.homeHandler)
 
 	router.HandlerFunc(http.MethodPost, "/welcome", app.welcomeHandler)
-	router.HandlerFunc(http.MethodPost, "/myacc/", app.createAuthenticationTokenHandler)
+	router.HandlerFunc(http.MethodPost, "/myacc", app.createAuthenticationTokenHandler)
+
 	router.HandlerFunc(http.MethodGet, "/activated/:token", app.activateUserHandler)
-	router.HandlerFunc(http.MethodPost, "/myacc/tasks", app.createlistHandler)
-	router.HandlerFunc(http.MethodGet, "/myacc/upcoming", app.requireActivatedUser(app.activateUserHandler))
+	router.HandlerFunc(http.MethodGet, "/myacc/tasks", app.createlistHandler)
+	router.HandlerFunc(http.MethodGet, "/myacc/upcoming", app.activateUserHandler)
 
 	// Return the httprouter instance.
 	return app.authenticate(router)

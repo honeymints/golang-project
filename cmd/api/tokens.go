@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"net/http"
+	"text/template"
 	"time"
 
 	"todolist.net/internal/data"
@@ -20,6 +21,7 @@ func (app *application) createAuthenticationTokenHandler(w http.ResponseWriter, 
 		app.failedValidationResponse(w, r, v.Errors)
 		return
 	}
+
 	// Lookup the user record based on the email address. If no matching user was
 	// found, then we call the app.invalidCredentialsResponse() helper to send a 401
 	// Unauthorized response to the client (we will create this helper in a moment).
@@ -61,5 +63,15 @@ func (app *application) createAuthenticationTokenHandler(w http.ResponseWriter, 
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
-	http.ServeFile(w, r, "templates/tasks.html")
+	http.Redirect(w, r, "/myacc/tasks/", http.StatusSeeOther)
+
+	tpl, err := template.ParseFiles("templates/tasks.html")
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+	dat := user.Name
+
+	tpl.ExecuteTemplate(w, "tasks.html", dat)
+
 }
