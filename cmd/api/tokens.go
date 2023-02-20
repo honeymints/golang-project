@@ -1,8 +1,11 @@
 package main
 
 import (
+	"encoding/base64"
 	"errors"
+	"fmt"
 	"net/http"
+	"text/template"
 	"time"
 
 	"todolist.net/internal/data"
@@ -55,11 +58,41 @@ func (app *application) createAuthenticationTokenHandler(w http.ResponseWriter, 
 		app.serverErrorResponse(w, r, err)
 		return
 	}
+	expiration := token.Expiry.UTC()
+	fmt.Println(expiration)
+	// set the cookie to expire in 24 hours
+	cookie := http.Cookie{
+		Name:     "token",
+		Value:    base64.StdEncoding.EncodeToString(token.Hash), // replace this with the actual token value
+		Expires:  expiration,
+		HttpOnly: true, // set HttpOnly to true to prevent client-side access to the cookie
+	}
+
+	http.SetCookie(w, &cookie)
 	// Encode the token to JSON and send it in the response along with a 201 Created
 	// status code.
 	err = app.writeJSON(w, http.StatusCreated, envelope{"authentication_token": token}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
-	http.ServeFile(w, r, "templates/tasks.html")
+	http.Redirect(w, r, "/myacc/tasks", http.StatusSeeOther)
+
+	tpl, err := template.ParseFiles("templates/tasks.html")
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+	dat := user.Name
+
+	tpl.ExecuteTemplate(w, "tasks.html", dat)
+}
+func (app *application) showlistHandler(w http.ResponseWriter, r *http.Request) {
+	tpl, err := template.ParseFiles("templates/tasks.html")
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+	dat := "aruzhan"
+
+	tpl.ExecuteTemplate(w, "tasks.html", dat)
 }

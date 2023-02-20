@@ -18,6 +18,11 @@ func (app *application) notActivatedUser(w http.ResponseWriter, r *http.Request)
 	app.errorResponse(w, r, http.StatusForbidden, message)
 }
 
+func (app *application) authenticationRequiredResponse(w http.ResponseWriter, r *http.Request) {
+	message := "you must be authenticated to access this resource"
+	app.errorResponse(w, r, http.StatusUnauthorized, message)
+}
+
 func (app *application) logError(r *http.Request, err error) {
 	// Use the PrintError() method to log the error message, and include the current
 	// request method and URL as properties in the log entry.
@@ -58,4 +63,10 @@ func (app *application) serverErrorResponse(w http.ResponseWriter, r *http.Reque
 func (app *application) methodNotAllowedResponse(w http.ResponseWriter, r *http.Request) {
 	message := fmt.Sprintf("the %s method is not supported for this resource", r.Method)
 	app.errorResponse(w, r, http.StatusMethodNotAllowed, message)
+}
+
+func (app *application) invalidAuthenticationTokenResponse(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("WWW-Authenticate", "Bearer")
+	message := "invalid or missing authentication token"
+	app.errorResponse(w, r, http.StatusUnauthorized, message)
 }

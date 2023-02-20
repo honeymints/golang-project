@@ -34,6 +34,12 @@ type password struct {
 	hash      []byte
 }
 
+var AnonymousUser = &User{}
+
+func (u *User) IsAnonymous() bool {
+	return u == AnonymousUser
+}
+
 // The Set() method calculates the bcrypt hash of a plaintext password, and stores both
 // the hash and the plaintext versions in the struct.
 func (p *password) Set(plaintextPassword string) error {
@@ -129,6 +135,34 @@ WHERE email = $1`
 		}
 	}
 	return &user, nil
+}
+
+func (m UserModel) GetByUserID(ID int64) (*Token, error) {
+	query := `
+SELECT hash, user_id, expiry, scope
+FROM tokens
+INNER JOIN users
+ON users.id = tokens.user_id
+WHERE id = $1`
+	var token Token
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	err := m.DB.QueryRowContext(ctx, query, ID).Scan(
+		&token.UserID,
+		&token.Expiry,
+		&token.Hash,
+		&token.Scope,
+	)
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, ErrRecordNotFound
+		default:
+			return nil, err
+		}
+	}
+
+	return &token, nil
 }
 
 // Update the details for a specific user. Notice that we check against the version

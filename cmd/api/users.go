@@ -14,11 +14,18 @@ import (
 
 // Add a createMovieHandler for the "POST /v1/movies" endpoint. For now we simply
 // return a plain-text placeholder response.
-func (app *application) homeHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) loginregisterHandler(w http.ResponseWriter, r *http.Request) {
 
 	http.ServeFile(w, r, "templates/Untitled-2.html")
 
 }
+
+func (app *application) homeHandler(w http.ResponseWriter, r *http.Request) {
+
+	http.ServeFile(w, r, "templates/main.html")
+
+}
+
 func (app *application) activateUserHandler(w http.ResponseWriter, r *http.Request) {
 	// Parse the plaintext activation token from the request body.
 	params := httprouter.ParamsFromContext(r.Context())
@@ -161,4 +168,14 @@ func (app *application) welcomeHandler(w http.ResponseWriter, r *http.Request) {
 		tpl.ExecuteTemplate(w, "welcome.html", dat)
 	}
 
+}
+
+func (app *application) logoutHandler(w http.ResponseWriter, r *http.Request) {
+	cookie := &http.Cookie{
+		Name:   "token",
+		Value:  "",
+		Expires: time.Now().AddDate(0, 0, -1)
+	}
+	http.SetCookie(w, cookie)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
