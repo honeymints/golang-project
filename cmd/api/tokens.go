@@ -64,6 +64,7 @@ func (app *application) createAuthenticationTokenHandler(w http.ResponseWriter, 
 	cookie := http.Cookie{
 		Name:     "token",
 		Value:    base64.StdEncoding.EncodeToString(token.Hash), // replace this with the actual token value
+		Path:     "/",
 		Expires:  expiration,
 		HttpOnly: true, // set HttpOnly to true to prevent client-side access to the cookie
 	}
@@ -75,16 +76,17 @@ func (app *application) createAuthenticationTokenHandler(w http.ResponseWriter, 
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
+
 	http.Redirect(w, r, "/myacc/tasks", http.StatusSeeOther)
 
-	tpl, err := template.ParseFiles("templates/tasks.html")
+	/* tpl, err := template.ParseFiles("templates/tasks.html")
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
 	dat := user.Name
 
-	tpl.ExecuteTemplate(w, "tasks.html", dat)
+	tpl.ExecuteTemplate(w, "tasks.html", dat) */
 }
 func (app *application) showlistHandler(w http.ResponseWriter, r *http.Request) {
 	tpl, err := template.ParseFiles("templates/tasks.html")

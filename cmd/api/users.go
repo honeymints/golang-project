@@ -171,11 +171,28 @@ func (app *application) welcomeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) logoutHandler(w http.ResponseWriter, r *http.Request) {
-	cookie := &http.Cookie{
-		Name:   "token",
-		Value:  "",
-		Expires: time.Now().AddDate(0, 0, -1)
+	fmt.Println("Logout request received")
+	cookie, err := r.Cookie("token")
+	if err != nil {
+		if err == http.ErrNoCookie {
+			// If the cookie is not set, return an unauthorized status
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+		// For any other type of error, return a bad request status
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	cookie = &http.Cookie{
+		Name:    "token",
+		Value:   "",
+		Path:    "/",
+		Expires: time.Unix(0, 0),
+
+		HttpOnly: true,
 	}
 	http.SetCookie(w, cookie)
+
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

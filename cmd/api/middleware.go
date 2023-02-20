@@ -1,12 +1,17 @@
 package main
 
 import (
+	"errors"
 	"net/http"
+	"strings"
+
+	"todolist.net/internal/data"
+	"todolist.net/internal/validator"
 )
 
 func (app *application) authenticate(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		/* 	// Add the "Vary: Authorization" header to the response. This indicates to any
+		// Add the "Vary: Authorization" header to the response. This indicates to any
 		// caches that the response may vary based on the value of the Authorization
 		// header in the request.
 		w.Header().Add("Vary", "Authorization")
@@ -57,58 +62,35 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 			}
 			return
 		}
-		tokens, err := app.models.Users.GetByUserID(user.ID)
-		if err != nil {
-			app.serverErrorResponse(w, r, err)
-			return
-		}
-		expire := tokens.Expiry
-		if expire.Before(time.Now()) {
-			http.Redirect(w, r, "/myacc/tasks", http.StatusSeeOther)
-			return
-		}
+		// Call the contextSetUser() helper to add the user information to the request
+		// context.
 		r = app.contextSetUser(r, user)
-		// Call the next handler in the chain.
-		next.ServeHTTP(w, r) */
-
-	})
-}
-
-func (app *application) requireActivatedUser(next http.HandlerFunc) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Use the contextGetUser() helper that we made earlier to retrieve the user
-		// information from the request context.
-		user := app.contextGetUser(r)
-		// If the user is anonymous, then call the authenticationRequiredResponse() to
-		// inform the client that they should authenticate before trying again.
-
-		// If the user is not activated, use the inactiveAccountResponse() helper to
-		// inform them that they need to activate their account.
-		if !user.Activated {
-			app.notActivatedUser(w, r)
-			return
-		}
 		// Call the next handler in the chain.
 		next.ServeHTTP(w, r)
 	})
 }
 
-/* func (app *application) checkCookies(next http.HandlerFunc) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		cookie, err := r.Cookie("token")
-		expirationString := cookie.Value
-		expiration, err := time.Parse(time.RFC3339, expirationString)
-
-		if err != nil || time.Now().After(expiration) {
-			fmt.Println("Cookie has expired")
-			fmt.Println(cookie.Expires)
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+func (app *application) requireActivatedUser(next http.HandlerFunc) http.HandlerFunc {
+	fn := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		user := app.contextGetUser(r)
+		// Check that a user is activated.
+		if !user.Activated {
+			app.notActivatedUser(w, r)
 			return
-		} else {
-
-			fmt.Println("Cookie is valid")
-			http.Redirect(w, r, "/myacc/tasks", http.StatusSeeOther)
-			next.ServeHTTP(w, r)
 		}
+		next.ServeHTTP(w, r)
 	})
-} */
+	// Wrap fn with the requireAuthenticatedUser() middleware before returning it.
+	return app.requireAuthenticatedUser(fn)
+
+}
+func (app *application) requireAuthenticatedUser(next http.HandlerFunc) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, err := r.Cookie("token")
+		if err != nil {
+			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
