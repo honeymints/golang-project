@@ -8,6 +8,8 @@
 body{
     overflow: hidden;
     background: linear-gradient(to left,#548668,#7044A1);
+    height: 100%;
+    width: 100%;
 }
 
 .wrapper{
@@ -208,13 +210,6 @@ body{
 
     /* opacity: 0; */
 }
-
-
-
-
-
-
-
 
 .cat{
     position: absolute;
