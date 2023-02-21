@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"text/template"
 	"time"
 
 	"todolist.net/internal/data"
@@ -77,24 +76,6 @@ func (app *application) createAuthenticationTokenHandler(w http.ResponseWriter, 
 		app.serverErrorResponse(w, r, err)
 	}
 
-	http.Redirect(w, r, "/myacc/tasks", http.StatusSeeOther)
+	http.Redirect(w, r, "/myacc/today", http.StatusSeeOther)
 
-	/* tpl, err := template.ParseFiles("templates/tasks.html")
-	if err != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
-	}
-	dat := user.Name
-
-	tpl.ExecuteTemplate(w, "tasks.html", dat) */
-}
-func (app *application) showlistHandler(w http.ResponseWriter, r *http.Request) {
-	tpl, err := template.ParseFiles("templates/tasks.html")
-	if err != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
-	}
-	dat := "aruzhan"
-
-	tpl.ExecuteTemplate(w, "tasks.html", dat)
 }

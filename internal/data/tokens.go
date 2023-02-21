@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"database/sql"
 	"encoding/base32"
+	"fmt"
 	"time"
 
 	"todolist.net/internal/validator"
@@ -63,6 +64,7 @@ func generateToken(userID int64, ttl time.Duration, scope string) (*Token, error
 	// work with we convert it to a slice using the [:] operator before storing it.
 	hash := sha256.Sum256([]byte(token.Plaintext))
 	token.Hash = hash[:]
+	fmt.Println(token.Hash)
 	return token, nil
 }
 

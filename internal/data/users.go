@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"database/sql"
+	"encoding/base64"
 	"errors"
 	"time"
 
@@ -137,34 +138,6 @@ WHERE email = $1`
 	return &user, nil
 }
 
-func (m UserModel) GetByUserID(ID int64) (*Token, error) {
-	query := `
-SELECT hash, user_id, expiry, scope
-FROM tokens
-INNER JOIN users
-ON users.id = tokens.user_id
-WHERE id = $1`
-	var token Token
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-	err := m.DB.QueryRowContext(ctx, query, ID).Scan(
-		&token.UserID,
-		&token.Expiry,
-		&token.Hash,
-		&token.Scope,
-	)
-	if err != nil {
-		switch {
-		case errors.Is(err, sql.ErrNoRows):
-			return nil, ErrRecordNotFound
-		default:
-			return nil, err
-		}
-	}
-
-	return &token, nil
-}
-
 // Update the details for a specific user. Notice that we check against the version
 // field to help prevent any race conditions during the request cycle, just like we did
 // when updating a movie. And we also check for a violation of the "users_email_key"
@@ -224,6 +197,40 @@ func (m UserModel) GetForToken(tokenScope, tokenPlaintext string) (*User, error)
 	// Execute the query, scanning the return values into a User struct. If no matching
 	// record is found we return an ErrRecordNotFound error.
 	err := m.DB.QueryRowContext(ctx, query, args...).Scan(
+		&user.ID,
+		&user.CreatedAt,
+		&user.Name,
+		&user.Email,
+		&user.Password.hash,
+		&user.Activated,
+		&user.Version,
+	)
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, ErrRecordNotFound
+		default:
+			return nil, err
+		}
+	}
+	// Return the matching user.
+	return &user, nil
+}
+
+func (m UserModel) GetByHash(tokenHash string) (*User, error) {
+	hash, _ := base64.StdEncoding.DecodeString(tokenHash)
+	query := `
+		SELECT users.id, users.created_at, users.name, users.email, users.password_hash, users.activated, users.version
+		FROM users
+		INNER JOIN tokens
+		ON users.id = tokens.user_id
+		WHERE tokens.hash = $1`
+	var user User
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	// Execute the query, scanning the return values into a User struct. If no matching
+	// record is found we return an ErrRecordNotFound error.
+	err := m.DB.QueryRowContext(ctx, query, hash).Scan(
 		&user.ID,
 		&user.CreatedAt,
 		&user.Name,
