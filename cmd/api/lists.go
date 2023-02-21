@@ -67,14 +67,14 @@ func (app *application) showlistHandler(w http.ResponseWriter, r *http.Request) 
 	}
 
 	// Return the list items as JSON.
-	err = app.writeJSON(w, http.StatusOK, envelope{"lists": lists}, nil)
-	if err != nil {
-		app.serverErrorResponse(w, r, err)
-	}
-	tpl, err := template.ParseFiles("templates/tasks.html")
+	/* 	err = app.writeJSON(w, http.StatusOK, envelope{"lists": lists}, nil)
+	   	if err != nil {
+	   		app.serverErrorResponse(w, r, err)
+	   	} */
+	tpl, err := template.ParseFiles("templates/tasks-2.html")
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
-	tpl.ExecuteTemplate(w, "tasks.html", lists)
+	tpl.ExecuteTemplate(w, "tasks-2.html", lists)
 }

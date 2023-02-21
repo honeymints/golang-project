@@ -1,0 +1,149 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>To Do</title>
+
+    <link rel="icon" href="favicon/logo.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon/logo.ico" type="image/x-icon">  
+
+    <link rel="stylesheet" href="css/css2.css" type="text/css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+</head>
+
+<body>
+
+    <div class="cat">   
+        <div class="user">
+            <img src="images/circle.png" alt="circle" class="icon"><img src="images/user.png" alt="user" class="icon" id="user">
+            <a href="#" class="username" id="open_pop_up">{{ Username }}</a>
+            <a href="#" class="set" id="open_pop_up">Account settings</a>
+            <div class="pop_up" id="pop_up">
+                <div class="pop_up_container">
+                    <div class="pop_up_body">
+                        <p>User settings</p>
+                        <img src="images/video-calling.png" alt="ava">
+                        <form action="">
+                            <input type="text" placeholder="Name" readonly><i class="uil uil-pen"></i>
+                            <input type="text" placeholder="E-mail" readonly><i class="uil uil-pen"></i>
+                            <p><a>Delete account</a></p>
+                            <p>Log out</p>
+                            <button>Save</button>
+                        </form>
+                        <div class="pop_up_close" id="close_pop_up">
+                            &#10006
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="my-day">
+            <img src="templates/images/circle.png" alt="circle" class="icon"><img src="templates/images/check.png" alt="user" class="icon" id="user">
+            <a href="#" class="myday">My day</a>
+        </div>
+        <div class="upcoming">
+            <img src="templates/images/circle.png" alt="circle" class="icon"><img src="templates/images/calendar.png" alt="user" class="icon" id="user">
+            <a href="upcoming.html" class="upcome">Upcoming</a>
+        </div>
+    </div>
+
+    <div class="hello">
+        <h1 class="head-text">Hello, {{.}}</h1>
+        <h3 class="subtext">Make your day productive!</h3>
+    </div>
+
+    <div class="today">
+        <h1 class="head-text">Today</h1>
+        <h3 class="subtext" id="date">{{ Date }}</h3>
+    </div>
+    
+    <div class="tasks">
+        <div class="wrapper">
+            <div class="task-input">
+                <img src="templates/images/add.png" alt="add" onclick="showInputSection()">
+                <input class="inp" id="inp" type="text" placeholder="Add a title" onclick="showInputSection()">
+
+                <div class="input-section" id="input-section">
+                    <div class="input-row">
+                        <input type="text" id="list-title-input" placeholder="Title" name="title" class="titles">
+                    </div>
+                    <div class="input-row">
+                        <input type="text" id="list-description-input" placeholder="Description" name="description" class="desc">
+                    </div>
+                    <div class="input-row" id="buttons">
+                        <button onclick="saveToList()">Add</button>
+                        <button class="cancel-button" onclick="hideInputSection()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            
+
+            <!-- <ul class="task-box">
+                <li class="task">
+                    <label for="1">
+                        <input type="checkbox" id="1">
+                        <p>renew</p>
+                    </label>
+                    <div class="settings">
+                        <ul class="task-menu">
+                            <i class="uil uil-pen"></i>Edit
+                            <i class="uil uil-trash"></i>Delete
+                        </ul>
+                    </div>
+                </li>
+            </ul> -->
+
+            <div class="before" id="before">
+                <h2 class="t">You have no new tasks yet. Click button to add new task.</h2>
+                <img src="images/working.png" alt="cat" class="work">
+            </div>
+
+            
+            
+        </div>
+    </div>
+
+    <script src="js/java.js"></script>
+
+    <script>
+        function showInputSection() {
+          document.getElementById('input-section').style.display = 'block';
+          document.getElementById('inp').style.display = 'none';
+          var image = document.getElementById('before');
+          image.style.display = 'none';
+        }
+      
+        function hideInputSection() {
+          document.getElementById('input-section').style.display = 'none';
+          document.getElementById('inp').style.display = 'block';
+          var image = document.getElementById('before');
+          image.style.display = 'block';
+        }
+      
+        function saveToList() {
+          var listTitle = document.getElementById('list-title-input').value;
+          var listDescription = document.getElementById('list-description-input').value;
+        //   var image = document.getElementById('before');
+          console.log('List Title:', listTitle);
+          console.log('List Description:', listDescription);
+        //   image.style.display = 'none';
+          hideInputSection();
+        }
+
+
+        window.addEventListener('load', () => {
+        const form = document.querySelector('#')
+        });
+
+    </script>
+
+</body>
+</html>

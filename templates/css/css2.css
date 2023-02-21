@@ -1,0 +1,603 @@
+*{
+    padding: 0;
+    box-sizing: border-box;
+    color: #548668;
+    font-family: 'Lato';
+}
+
+body{
+    overflow: hidden;
+    background: linear-gradient(to left,#548668,#7044A1);
+}
+
+.wrapper{
+    border-radius: 20px; 
+    background: #F5F5F5;
+    max-width: 1280px;
+    padding: 25px 0;
+    height: 100%;
+
+    display: flexbox;
+}
+
+.tasks{
+    position: absolute;
+    width: 1280px;
+    height: 525px;
+    left: 235px;
+    top: 215px;
+
+    background: #F5F5F5;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;  
+}
+
+.task-input{
+    height: 52px;
+    padding: 0 25px ;
+
+    transition: all 0.3 ease;
+}
+
+.task-input img{
+    height: 30px;
+    top: 6.7%;
+    position: absolute;
+    transform: translate(30px, 0%);
+    cursor: pointer;
+  }
+
+.task-input input{
+    background: #F5F5F5;
+    margin: 0;
+    font-size: 24px;
+    padding: 0 20px 0 70px;
+    width: 100%;
+    color: #548668;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.15);
+    height: 100%;
+    border: none;
+    border-radius: 15px;
+    outline: none;
+
+    transition: all 0.3s ease;
+}
+
+.task-input input::placeholder{
+    color: #97A29B;
+}
+
+/* .task-box{
+    margin: 24px 50px;
+}
+
+.task-box .task{
+    list-style: none;
+    font-size: 28px;
+    margin-bottom: 22px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #97A29B;
+} */
+
+/* .task-box .task:last-child{
+    margin-bottom: 0;
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.task label{
+    display: flex;
+}
+
+.task label input{
+    margin-top: 6px;
+    margin-right: 12px;
+} */
+
+/* li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.task .settings{
+    cursor: pointer;
+}
+
+.settings .task-menu{
+    position: absolute;
+    background: #FFFFFF;
+    padding: 5px 0;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    right: 40px;
+    top: 110px;
+    
+    transform-origin: top right;
+    transition: transform 0.3s ease;
+    transform: scale(0);
+    
+} */
+
+/* .settings:hover .task-menu{
+    transform: scale(1);
+}
+
+.task-menu li{
+    justify-content: flex-start;
+    padding: 7px 10px;
+    transition: ease 0.3s;
+}
+
+.task-menu li:hover{
+    background: #F5F5F5;
+}
+
+.task-menu li i{
+    padding-right: 8px;
+} */
+
+
+
+
+.task-input .input-section{
+    position: absolute;
+    width: 96.2%;
+    top: 25px;
+    display: none;
+    transition: all 0.3 ease;
+}
+
+#input-section{
+    transition: all 0.3 ease;
+}
+
+#buttons{
+    /* opacity: 0; */
+
+    position: absolute;
+    top: 100px;
+    right: 25px;
+    transition: all 0.3 ease;
+}
+
+.input-row button{
+    color: #FFFFFF;
+    font-size: 18px;
+    text-align: center;
+    width: 120px;
+    height: 40px;
+    background: #548668;
+    margin-left: 20px;
+    margin-right: 0;
+
+    border: #548668 3px solid;
+    border-radius: 15px;
+    transition: 0.3s ease;
+}
+
+.input-row button:hover{
+    color: #548668;
+    border: #548668 3px solid;
+    background: none;
+}
+
+.input-row input{
+    height: 40px;
+    transition: all 0.3 ease;
+}
+
+.inp{
+    z-index: 1000;
+    transition: all 0.3 ease;
+}
+
+.titles{
+    border-bottom-left-radius: 0!important;
+    border-bottom-right-radius: 0!important ;
+}
+
+.desc{
+    border-top-right-radius: 0!important;
+    border-top-left-radius: 0!important;
+    box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.15)!important;
+    height: 50px!important;
+    font-size: 20px!important;
+    transition: all 0.3s ease;
+    /* z-index: -2; */
+
+    /* opacity: 0; */
+}
+
+
+
+
+
+
+
+
+.cat{
+    position: absolute;
+    width: 230px;
+    min-height: 100%;
+    left: -16px;
+    top: 0px;
+
+    background: #F5F5F5;
+    border-radius: 20px;
+}
+
+.icon{
+    position: relative;
+    margin-top: 8%;
+    margin-left: 15%;
+    height: 40px;
+}
+
+#user{
+    position: absolute;
+    margin-top: 11%;
+    margin-left: -13%;
+    height: 20px;
+}
+
+.user, .my-day, .upcoming{
+    margin: 5%;
+    font-size: 18px;
+}
+
+.username, .set{
+    position: absolute;
+    margin-top: 9%;
+    margin-left: 3%;
+    text-decoration: none;
+}
+
+.set{
+    font-size: 12px;
+    top: 4.2%;
+}
+
+.myday, .upcome{
+    position: absolute;
+    margin-top: 27px;
+    margin-left: 3%;
+    text-decoration: none;
+}
+
+.hello{
+    position: absolute;
+    width: 1280px;
+    height: 100px;
+    left: 235px;
+    top: 15px;
+
+    background: #F5F5F5;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;    
+}
+
+.today{
+    position: absolute;
+    width: 1280px;
+    height: 70px;
+    left: 235px;
+    top: 130px;
+
+    background: #F5F5F5;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;   
+}
+
+.head-text{
+    position: absolute;
+    font-size: 24px;
+    margin: 1.3%;
+    left: 10px;
+    top: 2px;
+    font-weight: 700;
+}
+
+.subtext{
+    position: absolute;
+    font-size: 24px;
+    color: #97A29B;
+    font-weight: 500;
+    top: 30px;
+    margin-left: 1.3%;
+    left: 10px;
+}
+
+#date{
+    position: absolute;
+    top: -5px;
+    margin-left: 15%;
+}
+
+.before h2{
+    text-align: center;
+    margin-top: 50px;
+}
+
+.before img{
+    margin-left: 35%;
+    margin-top: 20px;
+    height: 300px;
+}
+
+.day{
+    position: absolute;
+    width: 1280px;
+    height: 70px;
+    left: 235px;
+    top: 15px;
+
+    background: #F5F5F5;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;   
+}
+
+.day h2{
+    position: absolute;
+    margin-left: 80px;
+    font-weight: 500;
+}
+
+.day img{
+    position: absolute;
+    height: 40px;
+    margin: 1.1%;
+    margin-left: 25px;
+}
+
+.yesterdays, .todays, .tomorrows{
+    height: auto;
+    min-height: 200px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.yesterdays{
+    position: absolute;
+    width: 415px;
+    left: 235px;
+    top: 100px;
+    display: flex;
+    height: auto;
+
+    background: #F5F5F5;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;   
+}
+
+.todays{
+    position: absolute;
+    width: 415px;
+    left: 668px;
+    top: 100px;
+
+    background: #F5F5F5;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;   
+}
+
+.tomorrows{
+    position: absolute;
+    width: 415px;
+    left: 1100px;
+    top: 100px;
+
+    background: #F5F5F5;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;   
+}
+
+.dates .data{
+    position: absolute;
+    width: 221px;
+    height: 54px;
+    left: 28px;
+
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+
+    color: #548668;
+}
+
+.dates .apta{
+    position: absolute;
+    width: 221px;
+    height: 54px;
+    right: -70px;
+    z-index: 1;
+
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+
+    color: #97A29B;
+}
+
+.dates img{
+    position: absolute;
+    height: 30px;
+    margin-top: 130px;
+    z-index: 1001;
+    transform: translate(40px, 40%);
+}
+
+.dates .inp{
+    /* position: absolute; */
+    height: 52px; 
+    margin-top: 130px;
+    border-radius: 15px;
+    margin-left: 20px;
+    width: 375px;
+    margin-bottom: 20px;
+
+    background: #F5F5F5;
+    font-size: 24px;
+    padding: 0 20px 0 70px;
+    color: #548668;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.15);
+    border: none;
+    outline: none;
+
+    transition: all 0.3s ease;
+}
+
+.dates input::placeholder{
+    color: #97A29B;
+}
+
+.dates .desc{
+    top: 50px;
+    z-index: 10;
+} 
+
+.dates .titles{
+    background: #F5F5F5;
+    margin: 0;
+    font-size: 24px;
+    padding: 0 20px 0 70px;
+    width: 90%;
+    color: #548668;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.15);
+    height: 52px;
+    border: none;
+    border-radius: 15px;
+    outline: none;
+    margin-top: 130px;
+    margin-left: 20px;
+}
+
+.dates .desc{
+    background: #F5F5F5;
+    margin: 0;
+    padding: 0 20px 0 70px;
+    width: 90%;
+    color: #548668;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.15);
+    height: 52px;
+    border: none;
+    border-radius: 15px;
+    outline: none;
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+.dates .yesterdays .input-section .input-row button{
+    margin-top: 150px;
+    margin-bottom: 20px;
+}
+
+.pop_up{
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    /* background: transparent; */
+    z-index: 1002;
+    top: 0;
+    /* transform: scale(0); */
+    background: rgba(0, 0, 0, 0.8);
+
+    transition: 0.3s ease-in-out;
+}
+
+.pop_up.active{
+    /* background: rgba(0, 0, 0, 0.8);
+    transform: scale(1); */
+    display: block;
+}
+
+.pop_up_container{
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.pop_up_body{
+    margin: auto;
+    width: 450px;
+    background: #F5F5F5;
+    border-radius: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.pop_up_body form{
+    background: #F5F5F5;
+    border-radius: 20px;
+    padding: 30px 15px 50px 15px;
+}
+
+.pop_up_body p{
+    margin-top: 30px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.pop_up_body form p{
+    font-size: 20px;
+    margin: 15px;
+}
+
+.pop_up_body input{
+    background: #F5F5F5;
+    margin: 15px;
+    font-size: 24px;
+    padding: 0 20px 0 20px;
+    width: 70%;
+    color: #548668;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.15);
+    height: 50px;
+    border: none;
+    border-radius: 15px;
+    outline: none;
+    margin-top: 0;
+}
+
+.pop_up_body button{
+    color: #FFFFFF;
+    font-size: 18px;
+    text-align: center;
+    width: 120px;
+    height: 40px;
+    background: #548668;
+    cursor: pointer;
+
+    border: #548668 3px solid;
+    border-radius: 15px;
+    transition: 0.3s ease;
+}
+
+.pop_up_body button:hover{
+    color: #548668;
+    border: #548668 3px solid;
+    background: none;
+}
+
+.pop_up_close{
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 21px;
+    cursor: pointer;
+}
+
+.pop_up_body img{
+    height: 150px;
+    margin-bottom: 0;
+}
+
+.pop_up_body i{
+    cursor: pointer;
+}
