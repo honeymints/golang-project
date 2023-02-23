@@ -68,11 +68,11 @@ func (app *application) showlistHandler(w http.ResponseWriter, r *http.Request) 
 		app.serverErrorResponse(w, r, err)
 		return
 	}
-
 	type Data struct {
-		Date string
-		List []*data.Lists
-		User *data.User
+		Expired bool
+		Date    string
+		List    []*data.Lists
+		User    *data.User
 	}
 	now := time.Now()
 
