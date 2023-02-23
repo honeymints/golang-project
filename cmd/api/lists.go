@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -107,19 +108,20 @@ func (app *application) deleteListHandler(w http.ResponseWriter, r *http.Request
 
 func (app *application) updateListHandler(w http.ResponseWriter, r *http.Request) {
 	params := httprouter.ParamsFromContext(r.Context())
-	fmt.Println("worked!")
 	id := params.ByName("id")
 	a, _ := strconv.ParseInt(id, 10, 64)
 
-	err := r.ParseForm()
+	var taskUpdate struct {
+		Title string `json:"title"`
+	}
+	err := json.NewDecoder(r.Body).Decode(&taskUpdate)
 	if err != nil {
 		app.errorResponse(w, r, http.StatusBadRequest, "invalid data")
 		return
 	}
-	fmt.Println("worked!")
-	title := r.Form.Get("title")
+	fmt.Println(taskUpdate.Title)
 
-	err = app.models.Lists.UpdateByID(a, title)
+	err = app.models.Lists.UpdatebyID(a, taskUpdate.Title)
 	if err != nil {
 		switch {
 		case errors.Is(err, data.ErrRecordNotFound):
@@ -131,9 +133,10 @@ func (app *application) updateListHandler(w http.ResponseWriter, r *http.Request
 	}
 	fmt.Println("ok")
 	// Return a 200 OK status code along with a success message.
-	err = app.writeJSON(w, http.StatusOK, envelope{"message": "list successfully deleted"}, nil)
+	err = app.writeJSON(w, http.StatusOK, envelope{"message": "list successfully updated"}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
+	http.Redirect(w, r, "/myacc/tasks", http.StatusSeeOther)
 
 }

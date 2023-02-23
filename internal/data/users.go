@@ -138,11 +138,6 @@ WHERE email = $1`
 	return &user, nil
 }
 
-// Update the details for a specific user. Notice that we check against the version
-// field to help prevent any race conditions during the request cycle, just like we did
-// when updating a movie. And we also check for a violation of the "users_email_key"
-// constraint when performing the update, just like we did when inserting the user
-// record originally.
 func (m UserModel) Update(user *User) error {
 	query := `
 UPDATE users
@@ -182,15 +177,12 @@ func (m UserModel) Delete(ID int64) error {
 	if err != nil {
 		return err
 	}
-	// Call the RowsAffected() method on the sql.Result object to get the number of rows
-	// affected by the query.
+
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
 		return err
 	}
-	// If no rows were affected, we know that the movies table didn't contain a record
-	// with the provided ID at the moment we tried to delete it. In that case we
-	// return an ErrRecordNotFound error.
+
 	if rowsAffected == 0 {
 		return ErrRecordNotFound
 	}

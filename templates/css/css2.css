@@ -139,10 +139,6 @@ body{
 }
 
 
-
-
-
-
 .cat{
     position: fixed;
     width: 230px;
@@ -565,8 +561,8 @@ body{
     position: absolute;
     color: #ac4444;
     font-size: 17px;
-    margin-top: 22px;
-    margin-left: 860px;
+    margin-top: 30px !important;
+    margin-left: 700px;
 }
 
 .task .time{

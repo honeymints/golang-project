@@ -217,6 +217,7 @@ func (app *application) deleteAccHandler(w http.ResponseWriter, r *http.Request)
 		HttpOnly: true,
 	}
 	http.SetCookie(w, cookie)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (app *application) UpdateUserHandler(w http.ResponseWriter, r *http.Request) {

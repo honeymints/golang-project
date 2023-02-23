@@ -24,7 +24,7 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodPost, "/myacc/logout", app.logoutHandler)
 	router.HandlerFunc(http.MethodGet, "/myacc/settings", app.requireAuthenticatedUser(app.showlistHandler))
 
-	router.HandlerFunc(http.MethodDelete, "/myacc/delete", app.deleteAccHandler)
+	router.HandlerFunc(http.MethodPost, "/myacc/delete", app.deleteAccHandler)
 	router.HandlerFunc(http.MethodPut, "/myacc/update", app.UpdateUserHandler)
 	router.HandlerFunc(http.MethodDelete, "/myacc/tasks/delete/:id", app.deleteListHandler)
 	router.HandlerFunc(http.MethodPut, "/myacc/tasks/update/:id", app.updateListHandler)

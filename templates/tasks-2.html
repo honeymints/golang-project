@@ -40,7 +40,7 @@
                         <form action="/myacc/logout" method="post">
                         <button type="submit">Logout</button>
                         </form>
-                        <form action="/myacc/delete" id="delete-form">
+                        <form action="/myacc/delete" method="post">
                         <button type="submit">Delete</button>
                         </form>
                         <div class="pop_up_close" id="close_pop_up">
@@ -52,7 +52,7 @@
         </div>
         <div class="my-day">
             <img src="/templates/images/circle.png" alt="circle" class="icon"><img src="/templates/images/check.png" alt="user" class="icon" id="user">
-            <a href="#" class="myday">My day</a>
+            <a href="/myacc/tasks" class="myday">My day</a>
         </div>
         <div class="upcoming">
             <img src="/templates/images/circle.png" alt="circle" class="icon"><img src="/templates/images/calendar.png" alt="user" class="icon" id="user">
@@ -99,7 +99,7 @@
                         <input onclick="deleteTask(this)" type="checkbox" id="checkbox-{{.ID}}" name="{{.ID}}">
                         <span class="task-title" id="{{.ID}}" name="title">{{.Title}}</span>
                             <input type="text" class="edit-input">
-                        <p class="status">expired</p>
+                        {{/* <p class="status">expired</p> */}}
                         <p class="time">{{.CreatedAt}}</p>
                     </label>
                     <i class="uil uil-pen edit-icon" onclick="enableEdit(this)"></i>
@@ -167,7 +167,6 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
     <script>
 const updateForm = document.querySelector('#update-form');
-const deleteForm = document.querySelector('#delete-form');
 updateForm.addEventListener('submit', (event) => {
   event.preventDefault();
 
@@ -186,29 +185,6 @@ updateForm.addEventListener('submit', (event) => {
   })
   .then(data => {
     // Handle successful response
-  })
-  .catch(error => {
-    // Handle error response
-  });
-});
-deleteForm.addEventListener('submit', (event) => {
-event.preventDefault();
-
-  const formData = new FormData(deleteForm);
-  const url = deleteForm.action;
-
-  fetch(url, {
-    method: 'DELETE',
-    body: formData
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    window.location.href = "/";
   })
   .catch(error => {
     // Handle error response
@@ -310,33 +286,33 @@ function saveEdit(saveIcon) {
   const editInput = task.querySelector('.edit-input');
   const editIcon = task.querySelector('.edit-icon');
   const editIcon1 = task.querySelector('.edit-icon1');
+  const taskId = taskTitle.getAttribute('id');
   
   taskTitle.textContent = editInput.value;
   task.classList.remove('edit-mode');
-  editInput.value = '';
   taskTitle.style.display = 'inline-block';
   editInput.style.display = 'none';
   editIcon.style.display = 'inline-block';
   editIcon1.style.display = 'none';
   saveIcon.style.display = 'none';
 
-
-   const updatedTask = {
+  const updatedTask = {
     title: editInput.value,
   };
 
   const formData = new FormData();
- formData.append('title', editInput.value);
+  formData.append('title', editInput.value);
 
- fetch(`/myacc/tasks/update/196`, {
-  method: 'PUT',
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  },
-  body: formData,
- });
+  editInput.value = '';
+
+  fetch(`/myacc/tasks/update/${taskId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(updatedTask),
+  });
 }
-
     </script>
 </body>
 </html>

@@ -102,21 +102,29 @@ func (m ListModel) DeleteByID(ID int64) error {
 	return nil
 }
 
-func (m ListModel) UpdateByID(ID int64, title string) error {
+func (m ListModel) UpdatebyID(ID int64, title string) error {
 	query := `
-UPDATE lists
-SET title = $1
-WHERE id = $2
-RETURNING version`
+	UPDATE lists
+	SET title = $1
+	WHERE id = $2
+	RETURNING id, title`
 	args := []interface{}{title, ID}
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
-	err := m.DB.QueryRowContext(ctx, query, args...).Scan()
+
+	// Execute the UPDATE query
+	result, err := m.DB.ExecContext(ctx, query, args...)
 	if err != nil {
-		switch {
-		default:
-			return err
-		}
+		return err
+	}
+
+	// Check the number of rows affected by the UPDATE query
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rowsAffected == 0 {
+		return ErrRecordNotFound
 	}
 	return nil
 }
