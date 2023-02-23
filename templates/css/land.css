@@ -1,0 +1,105 @@
+*{
+    padding: 0;
+    box-sizing: border-box;
+    color: #548668;
+    font-family: 'Lato';
+}
+
+body{
+    background: #FFFFFF;
+    
+}
+
+h3{ 
+    position: absolute;
+
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 43px;
+
+    color: #548668;
+}
+
+header{
+    height: 135px;
+}
+
+header .image{
+    position: absolute;
+    width: 82px;
+    height: 82px;
+    left: 51px;
+    top: 36px;
+}
+
+header .t-logo{
+    width: 209px;
+    height: 49px;
+    left: 150px;
+    top: 15px;
+}
+
+header a{
+    position: relative;
+    font-size: 20px;
+    font-weight: 700;
+
+    left: 1000px;
+    top: 50px;
+    margin: 40px;
+    text-decoration: none;
+
+    transition: 0.3s ease-in-out;
+}
+
+header a:hover{
+    color: #a0d7b6;
+}
+
+.wrapper img{
+    position: absolute;
+
+    height: 60%;
+    top: 200px;
+    right: 130px;
+}
+
+.text .main-text{
+    font-size: 48px;
+    left: 150px;
+    top: 200px;
+    position: absolute;
+    width: 700px;
+}
+
+.text .sub-text{
+    position: absolute;
+    font-size: 32px;
+    left: 150px;
+    top: 330px;
+    font-weight: 400;
+    width: 700px;
+}
+
+.wrapper .btn{
+    position: absolute;
+    top: 490px;
+    left: 150px;
+}
+
+.btn button{
+    border: none;
+    color: #FFFFFF;
+    font-size: 28px;
+    background: #548668;
+    border-radius: 20px;
+    padding: 20px 40px 20px 40px;
+    cursor: pointer;
+    
+    transition: 0.3s ease-in-out;
+}
+
+.btn button:hover{
+    background: #a0d7b6;
+}

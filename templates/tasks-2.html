@@ -40,7 +40,7 @@
                         <form action="/myacc/logout" method="post">
                         <button type="submit">Logout</button>
                         </form>
-                        <form action="/myacc/delete" method="POST">
+                        <form action="/myacc/delete" id="delete-form">
                         <button type="submit">Delete</button>
                         </form>
                         <div class="pop_up_close" id="close_pop_up">
@@ -73,7 +73,7 @@
     <div class="tasks">
         <div class="wrapper">
             <div class="task-input">
-            <form action="/myacc/today" method="post">
+            <form action="/myacc/tasks" method="post">
                 <img src="/templates/images/add.png" alt="add" onclick="showInputSection()">
                 <input class="inp" id="inp" type="text" placeholder="Add a title" onclick="showInputSection()">
 
@@ -96,10 +96,15 @@
             {{range .List}}
                 <li class="task">
                     <label for="{{.Title}}">
-                        <input onclick="deleteTask(this)" type="checkbox" id="{{.Title}}">
-                        <p>{{.Title}}</p>
+                        <input onclick="deleteTask(this)" type="checkbox" id="checkbox-{{.ID}}" name="{{.ID}}">
+                        <span class="task-title" id="{{.ID}}" name="title">{{.Title}}</span>
+                            <input type="text" class="edit-input">
+                        <p class="status">expired</p>
+                        <p class="time">{{.CreatedAt}}</p>
                     </label>
-                    <i class="uil uil-pen" onclick="editTask(this)"></i>
+                    <i class="uil uil-pen edit-icon" onclick="enableEdit(this)"></i>
+                    <i class="uil uil-cancel edit-icon1" onclick="cancelEdit(this)"></i>
+                    <i class="uil uil-save edit-icon2" onclick="saveEdit(this)"></i>
                 </li>
             {{end}}
             </ul>
@@ -127,8 +132,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     closePopUp.addEventListener('click', () => {
         popUp.classList.remove('active');
-        // Navigate to "/myacc/today"
-        window.location.href = "/myacc/today";
+        // Navigate to "/myacc/tasks"
+        window.location.href = "/myacc/tasks";
     });
 });
     </script>
@@ -159,26 +164,15 @@ document.addEventListener('DOMContentLoaded', function() {
           hideInputSection();
         }
 
-        function editTask(taskId){
-            console.log(taskId);
-        }
-
-        function deleteTask(deleteId){
-            
-        }
-
-        {{/* window.addEventListener('load', () => {
-        const form = document.querySelector('#')
-        }); */}}
-
     </script>
     <script>
-const form = document.querySelector('#update-form');
-form.addEventListener('submit', (event) => {
+const updateForm = document.querySelector('#update-form');
+const deleteForm = document.querySelector('#delete-form');
+updateForm.addEventListener('submit', (event) => {
   event.preventDefault();
 
-  const formData = new FormData(form);
-  const url = form.action;
+  const formData = new FormData(updateForm);
+  const url = updateForm.action;
 
   fetch(url, {
     method: 'PUT',
@@ -197,13 +191,55 @@ form.addEventListener('submit', (event) => {
     // Handle error response
   });
 });
+deleteForm.addEventListener('submit', (event) => {
+event.preventDefault();
 
+  const formData = new FormData(deleteForm);
+  const url = deleteForm.action;
 
+  fetch(url, {
+    method: 'DELETE',
+    body: formData
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    window.location.href = "/";
+  })
+  .catch(error => {
+    // Handle error response
+  });
+});
+</script>
 
+<script>
+function deleteTask(checkbox) {
+  // Retrieve the task ID from the checkbox name attribute
+  const taskId = checkbox.name;
+
+  // Make an AJAX request to delete the task
+  const xhr = new XMLHttpRequest();
+  xhr.open("DELETE", "/myacc/tasks/delete/" + taskId, true);
+  xhr.onload = function() {
+    if (this.status === 200) {
+      // Remove the deleted task from the DOM
+      const taskElem = checkbox.parentNode.parentNode;
+      taskElem.parentNode.removeChild(taskElem);
+    } else {
+      // Handle error response
+    }
+  };
+  xhr.send();
+}
 
 </script>
 
     <script>
+    // cat appearance 
         const templateContainer = document.getElementById("todo-list");
         const templateImage = document.getElementById("before");
 
@@ -213,5 +249,94 @@ form.addEventListener('submit', (event) => {
         templateImage.style.display = 'none';}
     </script>
 
+    <script>
+    //input appearance
+        const editIcon = document.querySelectorAll(".edit-icon");
+
+        editIcon.forEach((icon) => {
+        icon.addEventListener("click", () =>{
+        const label = icon.parentNode;
+
+        const taskTitle = label.querySelector(".task-title");
+        const editInput = label.querySelector(".edit-input");
+ 
+        if(taskTitle.style.display === "none") {
+        taskTitle.style.display = "inline-block";
+        editInput.style.display = "none";
+        } else {
+        taskTitle.style.display = "none";
+        editInput.style.display = "inline-block";
+        }
+
+    // Set the value of the edit input to the current task title
+        editInput.value = taskTitle.textContent;
+  });
+});
+// save cancel edit functionalities
+  function enableEdit(editIcon) {
+  const task = editIcon.closest('.task');
+  const taskTitle = task.querySelector('.task-title');
+  const editInput = task.querySelector('.edit-input');
+  const editIcon1 = task.querySelector('.edit-icon1');
+  const editIcon2 = task.querySelector('.edit-icon2');
+  
+  task.classList.add('edit-mode');
+  editInput.value = taskTitle.textContent;
+  editInput.focus();
+  editIcon.style.display = 'none';
+  editIcon1.style.display = 'inline-block';
+  editIcon2.style.display = 'inline-block';
+}
+
+ function cancelEdit(cancelIcon) {
+   const task = cancelIcon.closest('.task');
+   const taskTitle = task.querySelector('.task-title');
+   const editInput = task.querySelector('.edit-input');
+   const editIcon = task.querySelector('.edit-icon');
+   const editIcon2 = task.querySelector('.edit-icon2');
+  
+   task.classList.remove('edit-mode');
+   editInput.value = '';
+   taskTitle.style.display = 'inline-block';
+   editInput.style.display = 'none';
+   editIcon.style.display = 'inline-block';
+   editIcon2.style.display = 'none';
+}
+
+function saveEdit(saveIcon) {
+  
+  const task = saveIcon.closest('.task');
+  const taskTitle = task.querySelector('.task-title');
+  const editInput = task.querySelector('.edit-input');
+  const editIcon = task.querySelector('.edit-icon');
+  const editIcon1 = task.querySelector('.edit-icon1');
+  
+  taskTitle.textContent = editInput.value;
+  task.classList.remove('edit-mode');
+  editInput.value = '';
+  taskTitle.style.display = 'inline-block';
+  editInput.style.display = 'none';
+  editIcon.style.display = 'inline-block';
+  editIcon1.style.display = 'none';
+  saveIcon.style.display = 'none';
+
+
+   const updatedTask = {
+    title: editInput.value,
+  };
+
+  const formData = new FormData();
+ formData.append('title', editInput.value);
+
+ fetch(`/myacc/tasks/update/196`, {
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  },
+  body: formData,
+ });
+}
+
+    </script>
 </body>
 </html>

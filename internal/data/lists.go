@@ -68,6 +68,7 @@ func (m ListModel) GetByUser(userID int64) ([]*Lists, error) {
 		if err != nil {
 			return nil, err
 		}
+
 		lists = append(lists, list)
 	}
 
@@ -78,4 +79,44 @@ func (m ListModel) GetByUser(userID int64) ([]*Lists, error) {
 
 	// Return the Lists slice.
 	return lists, nil
+}
+
+func (m ListModel) DeleteByID(ID int64) error {
+	query := `
+		DELETE FROM lists
+		WHERE id=$1
+	`
+	result, err := m.DB.Exec(query, ID)
+	if err != nil {
+		return err
+	}
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return ErrRecordNotFound
+	}
+
+	return nil
+}
+
+func (m ListModel) UpdateByID(ID int64, title string) error {
+	query := `
+UPDATE lists
+SET title = $1
+WHERE id = $2
+RETURNING version`
+	args := []interface{}{title, ID}
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	err := m.DB.QueryRowContext(ctx, query, args...).Scan()
+	if err != nil {
+		switch {
+		default:
+			return err
+		}
+	}
+	return nil
 }

@@ -471,7 +471,7 @@ body{
 .pop_up_body form{
     background: #F5F5F5;
     border-radius: 20px;
-    padding: 30px 15px 50px 15px;
+    padding: 0px 15px 20px 15px;
 }
 
 .pop_up_body p{
@@ -530,7 +530,7 @@ body{
 
 .pop_up_body img{
     height: 150px;
-    margin-bottom: 0;
+    margin-bottom: 20px;
 }
 
 .pop_up_body i{
@@ -541,8 +541,8 @@ body{
     display: flex;
     border-bottom: 1px solid #97A29B;
     margin-right: 40px;
-    padding-bottom: 6px;
-    margin-bottom: 5px;
+    padding-bottom: 25px;
+    margin-bottom: 3px;
 }
 
 .task:last-child{
@@ -552,16 +552,55 @@ body{
 }
 
 .task label input{
+    margin-top: 20px;
     margin-right: 14px;
 }
 
-.task label p.checked{
-    text-decoration: line-through;
+.task span{
+    margin-top: 18px;
+    width: 850px;
+}
+
+.task .status{
+    position: absolute;
+    color: #ac4444;
+    font-size: 17px;
+    margin-top: 22px;
+    margin-left: 860px;
+}
+
+.task .time{
+    position: absolute;
+    margin-top: 22px;
+    margin-left: 830px;
+    color: #97A29B;
+    font-size: 17px;
 }
 
 .task i{
     position: absolute;
     right: 50px;
-    margin-top: -60px;
+    margin-top: -55px;
     cursor: pointer;
+}
+
+.task .uil-cancel{
+    right: 80px;
+}
+
+.task .uil-save{
+    right: 110px;
+}
+
+.edit-input{
+    width: 700px;
+    font-size: 22px;
+    border: none;
+    background: #e8e7e7;
+    border-radius: 10px;
+    margin: 0;
+    display: none;
+    margin: 0!important;
+    margin-top: 18px!important;
+    outline: none;
 }

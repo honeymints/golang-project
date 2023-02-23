@@ -18,16 +18,16 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodPost, "/welcome", app.welcomeHandler)
 	router.HandlerFunc(http.MethodPost, "/myacc", app.createAuthenticationTokenHandler)
 	router.HandlerFunc(http.MethodGet, "/activated/:token", app.activateUserHandler)
-	router.HandlerFunc(http.MethodGet, "/myacc/today", app.requireAuthenticatedUser(app.showlistHandler))
+	router.HandlerFunc(http.MethodGet, "/myacc/tasks", app.requireAuthenticatedUser(app.showlistHandler))
 
-	router.HandlerFunc(http.MethodPost, "/myacc/today", app.createlistHandler)
+	router.HandlerFunc(http.MethodPost, "/myacc/tasks", app.createlistHandler)
 	router.HandlerFunc(http.MethodPost, "/myacc/logout", app.logoutHandler)
 	router.HandlerFunc(http.MethodGet, "/myacc/settings", app.requireAuthenticatedUser(app.showlistHandler))
 
-	router.HandlerFunc(http.MethodDeLete, "/myacc/delete", app.deleteAccHandler)
+	router.HandlerFunc(http.MethodDelete, "/myacc/delete", app.deleteAccHandler)
 	router.HandlerFunc(http.MethodPut, "/myacc/update", app.UpdateUserHandler)
-	//router.HandlerFunc()
+	router.HandlerFunc(http.MethodDelete, "/myacc/tasks/delete/:id", app.deleteListHandler)
+	router.HandlerFunc(http.MethodPut, "/myacc/tasks/update/:id", app.updateListHandler)
 
-	// Return the httprouter instance.ss
 	return app.authenticate(router)
 }
