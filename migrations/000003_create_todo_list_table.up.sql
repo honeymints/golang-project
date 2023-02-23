@@ -1,6 +1,5 @@
 CREATE TABLE IF NOT EXISTS lists (
 ID bigserial PRIMARY KEY,
 user_id bigint NOT NULL REFERENCES users ON DELETE CASCADE,
-expiry TIMESTAMP DEFAULT NOW() + INTERVAL '24 hour',
 title text NOT NULL
 );
