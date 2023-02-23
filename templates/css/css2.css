@@ -6,10 +6,9 @@
 }
 
 body{
-    overflow: hidden;
+    /* overflow: auto; */
     background: linear-gradient(to left,#548668,#7044A1);
-    height: 100%;
-    width: 100%;
+    
 }
 
 .wrapper{
@@ -22,16 +21,32 @@ body{
     display: flexbox;
 }
 
+.wrapper ul {
+    font-size: 22px;
+    margin-left: 50px;
+  }
+
+.wrapper li {
+    list-style-type: none;
+}
+
 .tasks{
     position: absolute;
     width: 1280px;
-    height: 525px;
+    min-height: 525px;
+    height: auto;
     left: 235px;
     top: 215px;
+    margin-bottom: 15px;
 
     background: #F5F5F5;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 20px;  
+
+    display: inline-flex;
+    flex-direction: column;
+
+    z-index: -1;
 }
 
 .task-input{
@@ -43,9 +58,9 @@ body{
 
 .task-input img{
     height: 30px;
-    top: 6.7%;
+    /* top: 6.7%; */
     position: absolute;
-    transform: translate(30px, 0%);
+    transform: translate(30px, 35%);
     cursor: pointer;
   }
 
@@ -57,7 +72,7 @@ body{
     width: 100%;
     color: #548668;
     box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.15);
-    height: 100%;
+    height: 50px;
     border: none;
     border-radius: 15px;
     outline: none;
@@ -68,79 +83,6 @@ body{
 .task-input input::placeholder{
     color: #97A29B;
 }
-
-/* .task-box{
-    margin: 24px 50px;
-}
-
-.task-box .task{
-    list-style: none;
-    font-size: 28px;
-    margin-bottom: 22px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #97A29B;
-} */
-
-/* .task-box .task:last-child{
-    margin-bottom: 0;
-    border-bottom: 0;
-    padding-bottom: 0;
-}
-
-.task label{
-    display: flex;
-}
-
-.task label input{
-    margin-top: 6px;
-    margin-right: 12px;
-} */
-
-/* li{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.task .settings{
-    cursor: pointer;
-}
-
-.settings .task-menu{
-    position: absolute;
-    background: #FFFFFF;
-    padding: 5px 0;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
-    right: 40px;
-    top: 110px;
-    
-    transform-origin: top right;
-    transition: transform 0.3s ease;
-    transform: scale(0);
-    
-} */
-
-/* .settings:hover .task-menu{
-    transform: scale(1);
-}
-
-.task-menu li{
-    justify-content: flex-start;
-    padding: 7px 10px;
-    transition: ease 0.3s;
-}
-
-.task-menu li:hover{
-    background: #F5F5F5;
-}
-
-.task-menu li i{
-    padding-right: 8px;
-} */
-
-
-
 
 .task-input .input-section{
     position: absolute;
@@ -176,6 +118,8 @@ body{
     border: #548668 3px solid;
     border-radius: 15px;
     transition: 0.3s ease;
+
+    display: none!important;
 }
 
 .input-row button:hover{
@@ -185,38 +129,27 @@ body{
 }
 
 .input-row input{
-    height: 40px;
+    height: 50px;
     transition: all 0.3 ease;
 }
 
 .inp{
-    z-index: 1000;
+    z-index: 100;
     transition: all 0.3 ease;
 }
 
-.titles{
-    border-bottom-left-radius: 0!important;
-    border-bottom-right-radius: 0!important ;
-}
 
-.desc{
-    border-top-right-radius: 0!important;
-    border-top-left-radius: 0!important;
-    box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.15)!important;
-    height: 50px!important;
-    font-size: 20px!important;
-    transition: all 0.3s ease;
-    /* z-index: -2; */
 
-    /* opacity: 0; */
-}
+
+
 
 .cat{
-    position: absolute;
+    position: fixed;
     width: 230px;
     min-height: 100%;
     left: -16px;
     top: 0px;
+    /* height: 600px; */
 
     background: #F5F5F5;
     border-radius: 20px;
@@ -227,6 +160,7 @@ body{
     margin-top: 8%;
     margin-left: 15%;
     height: 40px;
+    z-index: -1;
 }
 
 #user{
@@ -234,6 +168,7 @@ body{
     margin-top: 11%;
     margin-left: -13%;
     height: 20px;
+    z-index: -1;
 }
 
 .user, .my-day, .upcoming{
@@ -246,6 +181,7 @@ body{
     margin-top: 9%;
     margin-left: 3%;
     text-decoration: none;
+    /* z-index: -1; */
 }
 
 .set{
@@ -258,6 +194,7 @@ body{
     margin-top: 27px;
     margin-left: 3%;
     text-decoration: none;
+    z-index: 0;
 }
 
 .hello{
@@ -269,7 +206,9 @@ body{
 
     background: #F5F5F5;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 20px;    
+    border-radius: 20px;  
+    
+    z-index: -1;
 }
 
 .today{
@@ -282,6 +221,8 @@ body{
     background: #F5F5F5;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 20px;   
+
+    z-index: -1;
 }
 
 .head-text{
@@ -422,7 +363,7 @@ body{
     position: absolute;
     height: 30px;
     margin-top: 130px;
-    z-index: 1001;
+    z-index: 101;
     transform: translate(40px, 40%);
 }
 
@@ -499,11 +440,10 @@ body{
     left: 0;
     right: 0;
     /* background: transparent; */
-    z-index: 1002;
     top: 0;
     /* transform: scale(0); */
     background: rgba(0, 0, 0, 0.8);
-
+    z-index:9999 !important;
     transition: 0.3s ease-in-out;
 }
 
@@ -594,5 +534,34 @@ body{
 }
 
 .pop_up_body i{
+    cursor: pointer;
+}
+
+.task label{
+    display: flex;
+    border-bottom: 1px solid #97A29B;
+    margin-right: 40px;
+    padding-bottom: 6px;
+    margin-bottom: 5px;
+}
+
+.task:last-child{
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+.task label input{
+    margin-right: 14px;
+}
+
+.task label p.checked{
+    text-decoration: line-through;
+}
+
+.task i{
+    position: absolute;
+    right: 50px;
+    margin-top: -60px;
     cursor: pointer;
 }

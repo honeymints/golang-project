@@ -7,10 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>To Do</title>
 
-    <link rel="icon" href="favicon/logo.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="favicon/logo.ico" type="image/x-icon">  
+    <link rel="icon" href="/templates/favicon/logo.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/templates/favicon/logo.ico" type="image/x-icon">  
 
-    <link rel="stylesheet" href="css/css2.css" type="text/css">
+    <link rel="stylesheet" href="/templates/css/css2.css" type="text/css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,20 +23,25 @@
 
     <div class="cat">   
         <div class="user">
-            <img src="images/circle.png" alt="circle" class="icon"><img src="images/user.png" alt="user" class="icon" id="user">
-            <a href="#" class="username" id="open_pop_up">{{ Username }}</a>
-            <a href="#" class="set" id="open_pop_up">Account settings</a>
+            <img src="/templates/images/circle.png" alt="circle" class="icon"><img src="/templates/images/user.png" alt="user" class="icon" id="user">
+            <a href="/myacc/settings" class="username" id="open_pop_up"> {{.User.Name}} </a> <!-- username -->
+            <a href="/myacc/settings" class="set" id="open_pop_up">Account settings</a>
             <div class="pop_up" id="pop_up">
                 <div class="pop_up_container">
                     <div class="pop_up_body">
                         <p>User settings</p>
-                        <img src="images/video-calling.png" alt="ava">
-                        <form action="">
-                            <input type="text" placeholder="Name" readonly><i class="uil uil-pen"></i>
-                            <input type="text" placeholder="E-mail" readonly><i class="uil uil-pen"></i>
-                            <p><a>Delete account</a></p>
-                            <p>Log out</p>
+                        <img src="/templates/images/video-calling.png" alt="ava">
+                        <form id="update-form" action="/myacc/update">
+                            <input type="text" placeholder="Name" name="name" value="{{.User.Name}}"><i class="uil uil-pen"></i>
+                            <input type="text" placeholder="E-mail" name="email" value="{{.User.Email}}"><i class="uil uil-pen"></i>
+                            
                             <button>Save</button>
+                        </form>
+                        <form action="/myacc/logout" method="post">
+                        <button type="submit">Logout</button>
+                        </form>
+                        <form action="/myacc/delete" method="POST">
+                        <button type="submit">Delete</button>
                         </form>
                         <div class="pop_up_close" id="close_pop_up">
                             &#10006
@@ -46,77 +51,94 @@
             </div>
         </div>
         <div class="my-day">
-            <img src="templates/images/circle.png" alt="circle" class="icon"><img src="templates/images/check.png" alt="user" class="icon" id="user">
+            <img src="/templates/images/circle.png" alt="circle" class="icon"><img src="/templates/images/check.png" alt="user" class="icon" id="user">
             <a href="#" class="myday">My day</a>
         </div>
         <div class="upcoming">
-            <img src="templates/images/circle.png" alt="circle" class="icon"><img src="templates/images/calendar.png" alt="user" class="icon" id="user">
-            <a href="upcoming.html" class="upcome">Upcoming</a>
+            <img src="/templates/images/circle.png" alt="circle" class="icon"><img src="/templates/images/calendar.png" alt="user" class="icon" id="user">
+            <a href="#" class="upcome">Upcoming</a>
         </div>
     </div>
 
     <div class="hello">
-        <h1 class="head-text">Hello, {{.}}</h1>
+        <h1 class="head-text">Hello, {{.User.Name}}</h1> <!-- username -->
         <h3 class="subtext">Make your day productive!</h3>
     </div>
 
     <div class="today">
         <h1 class="head-text">Today</h1>
-        <h3 class="subtext" id="date">{{ Date }}</h3>
+        <h3 class="subtext" id="date">{{.Date}}  </h3> <!-- date -->
     </div>
     
     <div class="tasks">
         <div class="wrapper">
             <div class="task-input">
-                <img src="templates/images/add.png" alt="add" onclick="showInputSection()">
+            <form action="/myacc/today" method="post">
+                <img src="/templates/images/add.png" alt="add" onclick="showInputSection()">
                 <input class="inp" id="inp" type="text" placeholder="Add a title" onclick="showInputSection()">
 
                 <div class="input-section" id="input-section">
                     <div class="input-row">
-                        <input type="text" id="list-title-input" placeholder="Title" name="title" class="titles">
+                        <input type="text" id="list-title-input" placeholder="ex.:to finish golang project" name="title" class="titles">
                     </div>
                     <div class="input-row">
-                        <input type="text" id="list-description-input" placeholder="Description" name="description" class="desc">
+                        {{/* <input type="text" id="list-description-input" placeholder="Description" name="description" class="desc"> */}}
                     </div>
                     <div class="input-row" id="buttons">
                         <button onclick="saveToList()">Add</button>
-                        <button class="cancel-button" onclick="hideInputSection()">Cancel</button>
+                        
                     </div>
                 </div>
+            </form>
+            {{/* <button id='close-btn' class="cancel-button" onclick="hideInputSection()">Cancel</button> */}}
             </div>
-            
-
-            <!-- <ul class="task-box">
+             <ul id="todo-list">
+            {{range .List}}
                 <li class="task">
-                    <label for="1">
-                        <input type="checkbox" id="1">
-                        <p>renew</p>
+                    <label for="{{.Title}}">
+                        <input onclick="deleteTask(this)" type="checkbox" id="{{.Title}}">
+                        <p>{{.Title}}</p>
                     </label>
-                    <div class="settings">
-                        <ul class="task-menu">
-                            <i class="uil uil-pen"></i>Edit
-                            <i class="uil uil-trash"></i>Delete
-                        </ul>
-                    </div>
+                    <i class="uil uil-pen" onclick="editTask(this)"></i>
                 </li>
-            </ul> -->
+            {{end}}
+            </ul>
 
             <div class="before" id="before">
                 <h2 class="t">You have no new tasks yet. Click button to add new task.</h2>
-                <img src="images/working.png" alt="cat" class="work">
+                <img src="/templates/images/working.png" alt="cat" class="work">
             </div>
 
-            
             
         </div>
     </div>
 
-    <script src="js/java.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const openPopUp = document.getElementById('open_pop_up');
+    const closePopUp = document.getElementById('close_pop_up');
+    const popUp = document.getElementById('pop_up');
+    
+    // Check if URL contains "/myacc/settings"
+    if (window.location.href.indexOf("/myacc/settings") > -1) {
+        popUp.classList.add('active');
+    }
+    
+    
+    closePopUp.addEventListener('click', () => {
+        popUp.classList.remove('active');
+        // Navigate to "/myacc/today"
+        window.location.href = "/myacc/today";
+    });
+});
+    </script>
 
     <script>
         function showInputSection() {
           document.getElementById('input-section').style.display = 'block';
           document.getElementById('inp').style.display = 'none';
+          document.getElementById('buttons').style.display = 'none';
+          {{/* document.getElementById('input-section').classList = '::'; */}}
           var image = document.getElementById('before');
           image.style.display = 'none';
         }
@@ -124,25 +146,71 @@
         function hideInputSection() {
           document.getElementById('input-section').style.display = 'none';
           document.getElementById('inp').style.display = 'block';
-          var image = document.getElementById('before');
-          image.style.display = 'block';
+          document.getElementById('buttons').style.display = 'none';
         }
       
         function saveToList() {
           var listTitle = document.getElementById('list-title-input').value;
           var listDescription = document.getElementById('list-description-input').value;
-        //   var image = document.getElementById('before');
+          //var image = document.getElementById('before');
           console.log('List Title:', listTitle);
           console.log('List Description:', listDescription);
-        //   image.style.display = 'none';
+          //image.style.display = 'none';
           hideInputSection();
         }
 
+        function editTask(taskId){
+            console.log(taskId);
+        }
 
-        window.addEventListener('load', () => {
+        function deleteTask(deleteId){
+            
+        }
+
+        {{/* window.addEventListener('load', () => {
         const form = document.querySelector('#')
-        });
+        }); */}}
 
+    </script>
+    <script>
+const form = document.querySelector('#update-form');
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(form);
+  const url = form.action;
+
+  fetch(url, {
+    method: 'PUT',
+    body: formData
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    // Handle successful response
+  })
+  .catch(error => {
+    // Handle error response
+  });
+});
+
+
+
+
+</script>
+
+    <script>
+        const templateContainer = document.getElementById("todo-list");
+        const templateImage = document.getElementById("before");
+
+        if (templateContainer.innerHTML.trim() === '') {
+        templateImage.style.display = 'block';}
+        else {
+        templateImage.style.display = 'none';}
     </script>
 
 </body>

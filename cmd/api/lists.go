@@ -34,26 +34,24 @@ func (app *application) createlistHandler(w http.ResponseWriter, r *http.Request
 	}
 	http.Redirect(w, r, "/myacc/today", http.StatusSeeOther)
 
-	/* lists, err := app.models.Lists.GetByUser(user.ID)
-	if err != nil {
-		app.serverErrorResponse(w, r, err)
-		return
-	}
-	// Return the newly created to-do list.
 	err = app.writeJSON(w, http.StatusAccepted, envelope{"list": list}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
-	tpl, err := template.ParseFiles("templates/tasks.html")
-	if err != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
-	}
-	tpl.ExecuteTemplate(w, "tasks.html", lists) */
 
 }
 func (app *application) showlistHandler(w http.ResponseWriter, r *http.Request) {
-	cookieToken, _ := r.Cookie("token")
+	cookieToken, err := r.Cookie("token")
+	if err != nil {
+		if err == http.ErrNoCookie {
+			// If the cookie is not set, return an unauthorized status
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+		// For any other type of error, return a bad request status
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	// Retrieve the user information from the access token.
 	user, err := app.models.Users.GetByHash(cookieToken.Value)
 	if err != nil {
@@ -66,15 +64,14 @@ func (app *application) showlistHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	// Return the list items as JSON.
-	/* 	err = app.writeJSON(w, http.StatusOK, envelope{"lists": lists}, nil)
-	   	if err != nil {
-	   		app.serverErrorResponse(w, r, err)
-	   	} */
-	tpl, err := template.ParseFiles("templates/tasks-2.html")
-	if err != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
+	type Data struct {
+		Date string
+		List []*data.Lists
+		User *data.User
 	}
-	tpl.ExecuteTemplate(w, "tasks-2.html", lists)
+	now := time.Now()
+	dateStr := now.Format("2006-01-02")
+	data := Data{Date: dateStr, List: lists, User: user}
+	tpl := template.Must(template.ParseFiles("templates/tasks-2.html"))
+	tpl.Execute(w, data)
 }

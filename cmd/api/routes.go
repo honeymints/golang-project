@@ -22,6 +22,12 @@ func (app *application) routes() http.Handler {
 
 	router.HandlerFunc(http.MethodPost, "/myacc/today", app.createlistHandler)
 	router.HandlerFunc(http.MethodPost, "/myacc/logout", app.logoutHandler)
+	router.HandlerFunc(http.MethodGet, "/myacc/settings", app.requireAuthenticatedUser(app.showlistHandler))
+
+	router.HandlerFunc(http.MethodDeLete, "/myacc/delete", app.deleteAccHandler)
+	router.HandlerFunc(http.MethodPut, "/myacc/update", app.UpdateUserHandler)
+	//router.HandlerFunc()
+
 	// Return the httprouter instance.ss
 	return app.authenticate(router)
 }

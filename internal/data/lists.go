@@ -37,34 +37,6 @@ func (m ListModel) Insert(list *Lists) error {
 	return nil
 }
 
-/* func (m ListModel) GetByUser(ID int64) (*Lists, error) {
-	query := `SELECT id, user_id, created_at, title
-	from lists
-	WHERE user_id=$1`
-	var list Lists
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-	// Execute the query, scanning the return values into a User struct. If no matching
-	// record is found we return an ErrRecordNotFound error.
-	err := m.DB.QueryRowContext(ctx, query, ID).Scan(
-		&list.ID,
-		&list.CreatedAt,
-		&list.Title,
-		&list.User_ID,
-	)
-	if err != nil {
-		switch {
-		case errors.Is(err, sql.ErrNoRows):
-			return nil, ErrRecordNotFound
-		default:
-			return nil, err
-		}
-	}
-	// Return the matching user.
-
-	return &list, nil
-} */
-
 func (m ListModel) GetByUser(userID int64) ([]*Lists, error) {
 	query := `
 		SELECT id, user_id, created_at, title
