@@ -1,1 +1,1 @@
-web: ./<executable-name>
+web: bin/api
