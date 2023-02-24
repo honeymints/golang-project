@@ -51,7 +51,7 @@ func main() {
 	flag.Parse()
 
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
-	db, err := sql.Open("postgres", "postgres://admin:gudron@hostname:5432/todolist?sslmode=require")
+	db, err := sql.Open("postgres", "postgres://gatgwnrc:4ATZR9hsHW4jnQRKgMvhM9310IoCvZDv@trumpet.db.elephantsql.com/gatgwnrc")
 
 	if err != nil {
 		logger.Fatal(err)
