@@ -124,7 +124,7 @@ func (app *application) welcomeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	app.background(func() {
 
-		data := "http://localhost:8000/activated/"
+		data := "https://stormy-sea-05075.herokuapp.com/activated/"
 		data += token.Plaintext
 		fmt.Print(data)
 		err = app.mailer.Send(user.Email, "user_welcome.tmpl", data)
