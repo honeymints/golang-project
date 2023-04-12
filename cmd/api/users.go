@@ -12,10 +12,15 @@ import (
 	"todolist.net/internal/validator"
 )
 
-func (app *application) loginregisterHandler(w http.ResponseWriter, r *http.Request) {
+func loginregisterHandler(w http.ResponseWriter, r *http.Request) {
 
 	http.ServeFile(w, r, "templates/Untitled-2.html")
-
+	if r.Method != http.MethodGet {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("login"))
 }
 
 func (app *application) homeHandler(w http.ResponseWriter, r *http.Request) {

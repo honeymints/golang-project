@@ -12,7 +12,7 @@ func (app *application) routes() http.Handler {
 
 	router.ServeFiles("/templates/*filepath", http.Dir("./templates/"))
 
-	router.HandlerFunc(http.MethodGet, "/login-register", app.loginregisterHandler)
+	router.HandlerFunc(http.MethodGet, "/login-register", loginregisterHandler)
 	router.HandlerFunc(http.MethodGet, "/", app.homeHandler)
 
 	router.HandlerFunc(http.MethodPost, "/welcome", app.welcomeHandler)

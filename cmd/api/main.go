@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -70,7 +71,7 @@ func main() {
 	}
 	// Use the httprouter instance returned by app.routes() as the server handler.
 	srv := &http.Server{
-		Addr:         ":" + os.Getenv("PORT"),
+		Addr:         fmt.Sprintf(":%d", cfg.port), //":3000" + os.Getenv("PORT"),
 		Handler:      app.routes(),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
