@@ -1,17 +1,10 @@
 package main
 
 import (
-	"encoding/base64"
-	"errors"
-	"fmt"
 	"net/http"
-	"time"
-
-	"todolist.net/internal/data"
-	"todolist.net/internal/validator"
 )
 
-func (app *application) createAuthenticationTokenHandler(w http.ResponseWriter, r *http.Request) {
+/* func (app *application) createAuthenticationTokenHandler(w http.ResponseWriter, r *http.Request) {
 	email := r.FormValue("email")
 	password := r.FormValue("pswd")
 
@@ -71,5 +64,13 @@ func (app *application) createAuthenticationTokenHandler(w http.ResponseWriter, 
 	}
 
 	http.Redirect(w, r, "/myacc/tasks", http.StatusSeeOther)
+
+} */
+
+func (app *application) createAuthenticationTokenHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusCreated)
+	w.Write([]byte("authenticate"))
+
+	app.writeJSON(w, http.StatusCreated, envelope{"msg": "data have been created"}, nil)
 
 }

@@ -4,37 +4,38 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"text/template"
 	"time"
 
-	"github.com/julienschmidt/httprouter"
 	"todolist.net/internal/data"
-	"todolist.net/internal/validator"
 )
 
-func loginregisterHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) loginregisterHandler(w http.ResponseWriter, r *http.Request) {
 
-	http.ServeFile(w, r, "templates/Untitled-2.html")
 	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("login"))
+	//http.ServeFile(w, r, "templates/Untitled-2.html")
 }
 
 func (app *application) homeHandler(w http.ResponseWriter, r *http.Request) {
 
-	http.ServeFile(w, r, "templates/main.html")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("home"))
+	//http.ServeFile(w, r, "templates/main.html")
 
 }
 
 func (app *application) activateUserHandler(w http.ResponseWriter, r *http.Request) {
-	// Parse the plaintext activation token from the request body.
-	params := httprouter.ParamsFromContext(r.Context())
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("activated"))
+	/*params := httprouter.ParamsFromContext(r.Context())
 	tokens := params.ByName("token")
 
-	// Validate the plaintext token provided by the client.
+	 // Validate the plaintext token provided by the client.
 	v := validator.New()
 	if data.ValidateTokenPlaintext(v, tokens); !v.Valid() {
 		app.failedValidationResponse(w, r, v.Errors)
@@ -85,12 +86,13 @@ func (app *application) activateUserHandler(w http.ResponseWriter, r *http.Reque
 		dat := user.Name
 
 		tpl.ExecuteTemplate(w, "activated.html", dat)
-	}
+	} */
 }
 
 func (app *application) welcomeHandler(w http.ResponseWriter, r *http.Request) {
-
-	user := &data.User{
+	w.WriteHeader(http.StatusCreated)
+	w.Write([]byte("welcome"))
+	/* user := &data.User{
 		Name:      r.FormValue("txt"),
 		Email:     r.FormValue("email"),
 		Activated: false,
@@ -129,7 +131,8 @@ func (app *application) welcomeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	app.background(func() {
 
-		data := "https://stormy-sea-05075.herokuapp.com/activated/"
+		//data := "https://stormy-sea-05075.herokuapp.com/activated/"
+		data := "http://localhost:3000/activated/"
 		data += token.Plaintext
 		fmt.Print(data)
 		err = app.mailer.Send(user.Email, "user_welcome.tmpl", data)
@@ -150,7 +153,7 @@ func (app *application) welcomeHandler(w http.ResponseWriter, r *http.Request) {
 		dat := r.FormValue("txt")
 
 		tpl.ExecuteTemplate(w, "welcome.html", dat)
-	}
+	} */
 
 }
 
